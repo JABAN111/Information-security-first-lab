@@ -1,4 +1,4 @@
-package itmo.labs.infobez_first.adapters.rest;
+package itmo.labs.infobez_first.adapters.rest.util;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

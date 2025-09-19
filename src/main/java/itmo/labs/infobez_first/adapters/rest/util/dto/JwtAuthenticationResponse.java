@@ -1,4 +1,4 @@
-package itmo.labs.infobez_first.adapters.rest.dto;
+package itmo.labs.infobez_first.adapters.rest.util.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

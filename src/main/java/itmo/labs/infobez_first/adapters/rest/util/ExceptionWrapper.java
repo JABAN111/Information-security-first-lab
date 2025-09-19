@@ -1,4 +1,4 @@
-package itmo.labs.infobez_first.adapters.rest;
+package itmo.labs.infobez_first.adapters.rest.util;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;

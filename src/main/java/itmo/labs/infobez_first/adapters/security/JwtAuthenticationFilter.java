@@ -1,6 +1,6 @@
 package itmo.labs.infobez_first.adapters.security;
 
-import itmo.labs.infobez_first.adapters.rest.ExceptionWrapper;
+import itmo.labs.infobez_first.adapters.rest.util.ExceptionWrapper;
 import itmo.labs.infobez_first.core.exceptions.JwtTokenExpiredException;
 import itmo.labs.infobez_first.core.ports.JwtService;
 import itmo.labs.infobez_first.core.ports.UserService;

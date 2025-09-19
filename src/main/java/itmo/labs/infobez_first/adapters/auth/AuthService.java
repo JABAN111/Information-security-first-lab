@@ -1,7 +1,7 @@
 package itmo.labs.infobez_first.adapters.auth;
 
-import itmo.labs.infobez_first.adapters.rest.dto.JwtAuthenticationResponse;
-import itmo.labs.infobez_first.adapters.rest.dto.AuthDto;
+import itmo.labs.infobez_first.adapters.rest.util.dto.JwtAuthenticationResponse;
+import itmo.labs.infobez_first.adapters.rest.util.dto.AuthDto;
 import itmo.labs.infobez_first.core.entity.Role;
 import itmo.labs.infobez_first.core.entity.User;
 import itmo.labs.infobez_first.core.exceptions.AuthorizeException;

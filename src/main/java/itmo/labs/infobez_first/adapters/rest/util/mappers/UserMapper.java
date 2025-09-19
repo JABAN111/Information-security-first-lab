@@ -1,6 +1,6 @@
-package itmo.labs.infobez_first.adapters.rest.mappers;
+package itmo.labs.infobez_first.adapters.rest.util.mappers;
 
-import itmo.labs.infobez_first.adapters.rest.dto.UserDto;
+import itmo.labs.infobez_first.adapters.rest.util.dto.UserDto;
 import itmo.labs.infobez_first.core.entity.User;
 
 public class UserMapper {

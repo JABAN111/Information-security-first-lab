@@ -1,0 +1,15 @@
+services:
+  postgres:
+    platform: linux/amd64
+    image: postgres
+    container_name: psql
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+    volumes:
+      - postgres:/var/lib/postgresql/data
+volumes:
+  postgres:

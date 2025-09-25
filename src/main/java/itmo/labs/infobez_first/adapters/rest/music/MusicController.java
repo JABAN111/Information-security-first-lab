@@ -5,6 +5,7 @@ import itmo.labs.infobez_first.adapters.rest.util.mappers.MusicMapper;
 import itmo.labs.infobez_first.core.ports.MusicService;
 import lombok.AllArgsConstructor;
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +30,8 @@ public class MusicController {
 
     @PostMapping
     public void addMusic(@RequestBody MusicDto musicDto) {
+        musicDto.setAuthor(StringEscapeUtils.escapeHtml4(musicDto.getAuthor()));
+        musicDto.setDescription(StringEscapeUtils.escapeHtml4(musicDto.getDescription()));
         musicService.add(MusicMapper.toEntity(musicDto));
     }
 }

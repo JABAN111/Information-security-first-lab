@@ -19,6 +19,7 @@ public class MusicServiceImpl implements MusicService {
 
     @Override
     public Music getMusic(Long id) {
+
         return repository.findById(id).orElseThrow(() -> new NotFoundException("music with id " + id + " not found"));
     }
 

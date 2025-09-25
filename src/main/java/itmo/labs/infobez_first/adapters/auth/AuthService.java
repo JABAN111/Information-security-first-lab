@@ -8,8 +8,8 @@ import itmo.labs.infobez_first.core.exceptions.AuthorizeException;
 import itmo.labs.infobez_first.core.exceptions.FieldNotSpecifiedException;
 import itmo.labs.infobez_first.core.ports.JwtService;
 import itmo.labs.infobez_first.core.ports.UserService;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
-@AllArgsConstructor
 @Slf4j
 public class AuthService {
     private final UserService userService;
@@ -27,6 +26,13 @@ public class AuthService {
 
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+
+    @Autowired
+    public AuthService(UserService userService, JwtService jwtService, PasswordEncoder passwordEncoder) {
+        this.userService = userService;
+        this.jwtService = jwtService;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public JwtAuthenticationResponse signUp(AuthDto request) {
         var user = getUserOrThrow(request);

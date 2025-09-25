@@ -14,13 +14,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/music")
+@AllArgsConstructor
 public class MusicController {
+    @Autowired
     private final MusicService musicService;
 
-    @Autowired
-    public MusicController(MusicService musicService) {
-        this.musicService = musicService;
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<MusicDto> getMusic(@PathVariable Long id) {

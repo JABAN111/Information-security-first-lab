@@ -26,13 +26,17 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.IOException;
 
 @Component
-@AllArgsConstructor
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public static final String BEARER_PREFIX = "Bearer ";
     public static final String HEADER_NAME = "Authorization";
     private final JwtService jwtService;
     private final UserService userService;
+
+    public JwtAuthenticationFilter(JwtService jwtService, UserService userService) {
+        this.jwtService = jwtService;
+        this.userService = userService;
+    }
 
     @Override
     protected void doFilterInternal(

@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,9 +24,9 @@ import java.util.regex.Pattern;
 @AllArgsConstructor
 public class AuthService {
     @Autowired
-    private UserService userService;
+    private Supplier<UserService> userService;
     @Autowired
-    private JwtService jwtService;
+    private Supplier<JwtService> jwtService;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -34,8 +35,8 @@ public class AuthService {
 
     public JwtAuthenticationResponse signUp(AuthDto request) {
         var user = getUserOrThrow(request);
-        userService.add(user);
-        var jwt = jwtService.generateToken(user);
+        userService.get().add(user);
+        var jwt = jwtService.get().generateToken(user);
         return new JwtAuthenticationResponse(jwt);
     }
 
@@ -48,7 +49,7 @@ public class AuthService {
         }
         User userEntity;
         try {
-            userEntity = userService.getUserByEmail(request.getEmail());
+            userEntity = userService.get().getUserByEmail(request.getEmail());
             log.debug("Stored hash: {}", userEntity.getPassword());
 
             if (!passwordEncoder.matches(request.getPassword(), userEntity.getPassword())) {
@@ -57,7 +58,7 @@ public class AuthService {
         } catch (UsernameNotFoundException e) {
             throw new AuthorizeException("Пользователя с заданным email не существует");
         }
-        return new JwtAuthenticationResponse(jwtService.generateToken(userEntity));
+        return new JwtAuthenticationResponse(jwtService.get().generateToken(userEntity));
     }
 
     private User getUserOrThrow(AuthDto request) {
@@ -74,7 +75,7 @@ public class AuthService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .build();
 
-        if (userService.isExist(user.getUsername())) {
+        if (userService.get().isExist(user.getUsername())) {
             log.warn("User with username: {} exist", user.getUsername());
             throw new AuthorizeException("Пользователь с именем: " + user.getUsername() +
                     " уже существует");

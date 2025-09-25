@@ -17,6 +17,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -25,6 +26,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
+import java.util.function.Supplier;
 
 @Component
 @Slf4j
@@ -33,9 +35,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public static final String BEARER_PREFIX = "Bearer ";
     public static final String HEADER_NAME = "Authorization";
     @Autowired
-    private final JwtService jwtService;
+    private final Supplier<JwtService> jwtService;
     @Autowired
-    private final UserService userService;
+    private final Supplier<UserService> userService;
 
     @Override
     protected void doFilterInternal(
@@ -51,13 +53,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 return;
             }
             var jwt = authHeader.substring(BEARER_PREFIX.length());
-            var username = jwtService.extractUserName(jwt);
+            var username = jwtService.get().extractUserName(jwt);
             if (StringUtils.isNotEmpty(username) && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = userService
+                        .get()
                         .getUserDetailsService()
                         .loadUserByUsername(username);
 
-                if (jwtService.isTokenValid(jwt, userDetails)) {
+                if (jwtService.get().isTokenValid(jwt, userDetails)) {
                     SecurityContext context = SecurityContextHolder.createEmptyContext();
 
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(

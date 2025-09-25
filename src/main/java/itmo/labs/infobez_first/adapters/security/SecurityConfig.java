@@ -22,6 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 import org.springframework.security.config.http.SessionCreationPolicy;
 
@@ -31,9 +32,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 @AllArgsConstructor
 public class SecurityConfig {
     @Autowired
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final Supplier<JwtAuthenticationFilter> jwtAuthenticationFilter;
     @Autowired
-    private final UserService userService;
+    private final Supplier<UserService> userService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
@@ -53,7 +54,7 @@ public class SecurityConfig {
                 )
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationFilter.get(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
@@ -65,7 +66,7 @@ public class SecurityConfig {
     @Bean
     public AuthenticationProvider authenticationProvider() {
         var authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userService.getUserDetailsService());
+        authProvider.setUserDetailsService(userService.get().getUserDetailsService());
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }

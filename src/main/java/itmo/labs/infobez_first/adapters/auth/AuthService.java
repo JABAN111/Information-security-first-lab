@@ -23,11 +23,11 @@ import java.util.regex.Pattern;
 @AllArgsConstructor
 public class AuthService {
     @Autowired
-    private final UserService userService;
+    private UserService userService;
     @Autowired
-    private final JwtService jwtService;
+    private JwtService jwtService;
     @Autowired
-    private final PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
